@@ -1,49 +1,58 @@
 import React, {useState} from 'react';
 
-function CreateRadioButton(numOfPeople, membersInfo) {
-  
-  var RadioButtons = [];
-  for (var i = 0; i < numOfPeople; i++) {
-    RadioButtons.push (
-      <div key={i}>
-        <input type="radio"/>
-      </div>
-    )
-  }
-  return RadioButtons;
-}
-
-function AddMemberInfo(numOfPeople, membersInfo) {
-  var RadioButtons = [];
-  
-  for (var i = 0; i < numOfPeople; i++) {
-    RadioButtons.push (
-      <div key={i}>
-        <input type="text" onChange={(e, index) => handleMemeberinfo(e, index)}/>
-      </div>
-    )
-  }
-  return RadioButtons;
-}
-
-function handleMemeberinfo(e, index) {
-  // console.log(RadioButtons);
-  
-}
-
 export default function Top() {
   const [numOfPeople, setNumOfPeople] = useState(0);
-  var [memberInfo, SetMemberInfo] = useState([]);
+  const [memberInfo, SetMemberInfo] = useState([]);
+
+  function handleMemeberinfo(e, memberInfo) {
+    let newArr = [];
+    memberInfo.map((el, index) => {
+      if (index == e.target.name) {
+        newArr.push(e.target.value);
+      } else {
+        newArr.push(el);
+      }
+    });
+    SetMemberInfo(newArr);
+    
+  }
+
+  function CreateRadioButton(numOfPeople, membersInfo) {
+  
+    var RadioButtons = [];
+    memberInfo.map((el) => {
+      RadioButtons.push (
+        <div key={el}>
+          <input type="radio"/>
+          <label htmlFor="">{el}</label>
+        </div>
+      )
+    })
+    return RadioButtons;
+  }
 
   function handleChange(e) {
-    console.log('in the handle change');
-    setNumOfPeople(e.target.value);
+    const temp = e.target.value;
+    setNumOfPeople(temp);
     SetMemberInfo([]);
-    for (var i = 0; i < numOfPeople; i++) {
-      console.log('memberInfo');
+    var i;
+    for (i = 0; i < temp; i++) {
       SetMemberInfo(memberInfo.push("hi"));
     }
-    console.log(memberInfo);
+    SetMemberInfo(memberInfo);
+  }
+
+  function AddMemberInfo(numOfPeople, membersInfo) {
+    var RadioButtons = [];
+    
+    for (var i = 0; i < numOfPeople; i++) {
+      RadioButtons.push (
+        <div key={i}>
+          <input type="text" name={i} onChange={(e, index) => handleMemeberinfo(e, memberInfo)}/>
+        </div>
+      )
+    }
+    return RadioButtons;
   }
 
   return(
@@ -51,11 +60,11 @@ export default function Top() {
       <div>how many people are in your group</div>
       <input type="text" onChange={handleChange} />
       <div>type their name</div>
-      {AddMemberInfo(numOfPeople, 1)}
+      {AddMemberInfo(numOfPeople, memberInfo)}
       <div>who paid?</div>
-      {CreateRadioButton(numOfPeople, 1)}
+      {CreateRadioButton(numOfPeople, memberInfo)}
       <div>for who?</div>
-      {CreateRadioButton(numOfPeople, 1)}
+      {CreateRadioButton(numOfPeople, memberInfo)}
       <button>calculate</button>
     </div>
   )
