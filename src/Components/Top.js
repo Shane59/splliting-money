@@ -6,6 +6,7 @@ export default function Top() {
 
   function handleMemeberinfo(e, memberInfo) {
     let newArr = [];
+    SetMemberInfo(newArr);
     memberInfo.map((el, index) => {
       if (index == e.target.name) {
         newArr.push(e.target.value);
@@ -17,13 +18,25 @@ export default function Top() {
     
   }
 
-  function CreateRadioButton(numOfPeople, membersInfo) {
-  
+  function CreateRadioButtonForWhoPaid(numOfPeople, membersInfo) {
     var RadioButtons = [];
-    memberInfo.map((el) => {
+    membersInfo.map((el, index) => {
       RadioButtons.push (
         <div key={el}>
-          <input type="radio"/>
+          <input type="radio" name={`for-who-paid-${index}`}/>
+          <label htmlFor="">{el}</label>
+        </div>
+      )
+    })
+    return RadioButtons;
+  }
+
+  function CreateRadioButtonForWho(numOfPeople, membersInfo) {
+    var RadioButtons = [];
+    membersInfo.map((el, index) => {
+      RadioButtons.push (
+        <div key={el}>
+          <input type="radio" name={`for-who-${index}`}/>
           <label htmlFor="">{el}</label>
         </div>
       )
@@ -44,7 +57,9 @@ export default function Top() {
 
   function AddMemberInfo(numOfPeople, membersInfo) {
     var RadioButtons = [];
-    
+    console.log('====================================');
+    console.log('addMemberInfo');
+    console.log('====================================');
     for (var i = 0; i < numOfPeople; i++) {
       RadioButtons.push (
         <div key={i}>
@@ -59,12 +74,24 @@ export default function Top() {
     <div>
       <div>how many people are in your group</div>
       <input type="text" onChange={handleChange} />
-      <div>type their name</div>
-      {AddMemberInfo(numOfPeople, memberInfo)}
-      <div>who paid?</div>
-      {CreateRadioButton(numOfPeople, memberInfo)}
-      <div>for who?</div>
-      {CreateRadioButton(numOfPeople, memberInfo)}
+      {numOfPeople !== 0 ? 
+        <div>
+          <div>
+            <div>type their name</div>
+            {AddMemberInfo(numOfPeople, memberInfo)}
+          </div> 
+          <div>who paid?</div>
+          <div>
+            {CreateRadioButtonForWhoPaid(numOfPeople, memberInfo)}
+          </div>
+          <div>for who?</div>
+          <div>
+            {CreateRadioButtonForWho(numOfPeople, memberInfo)}
+          </div> 
+        </div>
+        :
+        null
+      }
       <button>calculate</button>
     </div>
   )
