@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 export default function Top() {
-  const [numOfPeople, setNumOfPeople] = useState(0);
   const [memberInfo, SetMemberInfo] = useState([]);
+  const [currentMember, SetCurrentMember] = useState("");
 
   function handleMemeberinfo(e, memberInfo) {
     let newArr = [];
@@ -18,9 +18,9 @@ export default function Top() {
     
   }
 
-  function CreateRadioButtonForWhoPaid(numOfPeople, membersInfo) {
+  function CreateRadioButtonForWhoPaid() {
     var RadioButtons = [];
-    membersInfo.map((el, index) => {
+    memberInfo.map((el, index) => {
       RadioButtons.push (
         <div key={el}>
           <input type="radio" name={`for-who-paid-${index}`}/>
@@ -31,9 +31,9 @@ export default function Top() {
     return RadioButtons;
   }
 
-  function CreateRadioButtonForWho(numOfPeople, membersInfo) {
+  function CreateRadioButtonForWho() {
     var RadioButtons = [];
-    membersInfo.map((el, index) => {
+    memberInfo.map((el, index) => {
       RadioButtons.push (
         <div key={el}>
           <input type="radio" name={`for-who-${index}`}/>
@@ -44,55 +44,45 @@ export default function Top() {
     return RadioButtons;
   }
 
-  function handleChange(e) {
-    const temp = e.target.value;
-    setNumOfPeople(temp);
-    SetMemberInfo([]);
-    var i;
-    for (i = 0; i < temp; i++) {
-      SetMemberInfo(memberInfo.push("hi"));
-    }
-    SetMemberInfo(memberInfo);
+  function AddMemberInfo() {
+    
+    return (
+      <div>
+        <input id="memberName" type="text" onChange={(e) => SetCurrentMember(e.target.value)}/>
+        <label htmlFor="memberName"></label>
+        <button onClick={() => addMemebers()}>Add +</button>
+      </div>
+    );
   }
 
-  function AddMemberInfo(numOfPeople, membersInfo) {
-    var RadioButtons = [];
-    console.log('====================================');
-    console.log('addMemberInfo');
-    console.log('====================================');
-    for (var i = 0; i < numOfPeople; i++) {
-      RadioButtons.push (
-        <div key={i}>
-          <input type="text" name={i} onChange={(e, index) => handleMemeberinfo(e, memberInfo)}/>
-        </div>
-      )
-    }
-    return RadioButtons;
+  function addMemebers() {
+    let newArr = [...memberInfo];
+    newArr.push(currentMember);
+    SetMemberInfo(newArr);
+    document.getElementById('memberName').value ='';
   }
+
+  useEffect(() => {
+    console.log('memberInfo has Changed' + memberInfo);
+  }, [memberInfo])
 
   return(
     <div>
-      <div>how many people are in your group</div>
-      <input type="text" onChange={handleChange} />
-      {numOfPeople !== 0 ? 
+      <div>
         <div>
-          <div>
-            <div>type their name</div>
-            {AddMemberInfo(numOfPeople, memberInfo)}
-          </div> 
-          <div>who paid?</div>
-          <div>
-            {CreateRadioButtonForWhoPaid(numOfPeople, memberInfo)}
-          </div>
-          <div>for who?</div>
-          <div>
-            {CreateRadioButtonForWho(numOfPeople, memberInfo)}
-          </div> 
+          <div>type their name</div>
+          {AddMemberInfo()}
+        </div> 
+        <div>who paid?</div>
+        <div>
+          {CreateRadioButtonForWhoPaid()}
         </div>
-        :
-        null
-      }
-      <button>calculate</button>
-    </div>
+        <div>for who?</div>
+        <div>
+          {CreateRadioButtonForWho()}
+        </div> 
+      </div>
+    <button>calculate</button>
+  </div>
   )
 }
