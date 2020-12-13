@@ -3,27 +3,22 @@ import React, {useState, useEffect} from 'react';
 export default function Top() {
   const [memberInfo, SetMemberInfo] = useState([]);
   const [currentMember, SetCurrentMember] = useState("");
-
-  function handleMemeberinfo(e, memberInfo) {
-    let newArr = [];
-    SetMemberInfo(newArr);
-    memberInfo.map((el, index) => {
-      if (index == e.target.name) {
-        newArr.push(e.target.value);
-      } else {
-        newArr.push(el);
-      }
-    });
-    SetMemberInfo(newArr);
-    
-  }
+  const [amoutPaid, SetAmoutPaid] = useState(0);
+  const [whoPaid, SetWhoPaid] = useState('');
+  const [forWho, SetForWho] = useState([]);
 
   function CreateRadioButtonForWhoPaid() {
     var RadioButtons = [];
     memberInfo.map((el, index) => {
       RadioButtons.push (
         <div key={el}>
-          <input type="radio" name={`for-who-paid-${index}`}/>
+          <input
+            type="radio"
+            value={el}
+            name={`for-who-paid-${index}`}
+            checked={whoPaid === el}
+            onChange={(e) => selectedPepople(e)}
+          />
           <label htmlFor="">{el}</label>
         </div>
       )
@@ -36,7 +31,13 @@ export default function Top() {
     memberInfo.map((el, index) => {
       RadioButtons.push (
         <div key={el}>
-          <input type="radio" name={`for-who-${index}`}/>
+          <input
+            type="radio"
+            value={el}
+            name={`for-who-${index}`}
+            checked={forWho.includes(el)}
+            onClick={(e) => selectedPepopleForWho(e)}
+          />
           <label htmlFor="">{el}</label>
         </div>
       )
@@ -45,10 +46,13 @@ export default function Top() {
   }
 
   function AddMemberInfo() {
-    
     return (
       <div>
-        <input id="memberName" type="text" onChange={(e) => SetCurrentMember(e.target.value)}/>
+        <input
+          id="memberName"
+          type="text"
+          onChange={(e) => SetCurrentMember(e.target.value)}
+        />
         <label htmlFor="memberName"></label>
         <button onClick={() => addMemebers()}>Add +</button>
       </div>
@@ -62,9 +66,28 @@ export default function Top() {
     document.getElementById('memberName').value ='';
   }
 
+  function selectedPepople(e) {
+    SetWhoPaid(e.target.value);
+  }
+
+  function selectedPepopleForWho(e) {
+    let newArr = [...forWho];
+    if (forWho.includes(e.target.value)) {
+      var deleteIndex = forWho.indexOf(e.target.value);
+      newArr.splice(deleteIndex, deleteIndex = 1);
+    } else {
+      newArr.push(e.target.value);
+    }
+    SetForWho(newArr);
+  }
+
   useEffect(() => {
     console.log('memberInfo has Changed' + memberInfo);
   }, [memberInfo])
+
+  useEffect(() => {
+    console.log('for Who?' + forWho);
+  }, [forWho])
 
   return(
     <div>
@@ -73,6 +96,16 @@ export default function Top() {
           <div>type their name</div>
           {AddMemberInfo()}
         </div> 
+        {memberInfo.length > 0 ? 
+          <div>
+            how much?
+            <div>
+              <input type="text" onChange={(e) => SetAmoutPaid(e.target.value)}/>
+            </div>
+            {amoutPaid} yen!
+          </div> :
+          null
+        }
         <div>who paid?</div>
         <div>
           {CreateRadioButtonForWhoPaid()}
