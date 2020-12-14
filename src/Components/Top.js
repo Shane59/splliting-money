@@ -80,6 +80,24 @@ export default function Top() {
     }
     SetForWho(newArr);
   }
+  function calcBill() {
+    const userObj = [];
+    for (var i = 0; i < memberInfo.length; i++) {
+      const temp = {};
+      temp.key = memberInfo[i];
+      temp.value = 0;
+      userObj.push(temp);
+    }
+    const billPerPerson = Math.round(amoutPaid / forWho.length);
+
+    Object.keys(userObj).map((index) => {
+      if (forWho.includes(userObj[index].key)) {
+        userObj[index].value += billPerPerson;
+      }
+    });
+    console.log(userObj);
+    
+  }
 
   useEffect(() => {
     console.log('memberInfo has Changed' + memberInfo);
@@ -115,7 +133,7 @@ export default function Top() {
           {CreateRadioButtonForWho()}
         </div> 
       </div>
-    <button>calculate</button>
+    <button onClick={() => calcBill()}>calculate</button>
   </div>
   )
 }
