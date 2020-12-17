@@ -1,0 +1,51 @@
+.title {
+  color: #05668D;
+}
+
+.section {
+  margin: 10px;
+}
+
+.add-member-input {
+  height: 33px;
+}
+
+.add-button {
+  padding: 10px;
+  background-color: #02C39A;
+}
+
+.subtitle {
+  margin-bottom: 10px;
+}
+
+.display-bill {
+  margin-top: 5px;
+  border-bottom: 2px solid #028090;
+  padding-bottom: 10px;
+}
+
+.person-result {
+  display: flex;
+}
+
+.result-name {
+  flex: 0 0 180px;
+}
+
+.result-amount {
+  flex: 1 0 auto;
+}
+
+.amount-input {
+  height: 33px;
+}
+
+.calc-button {
+  padding: 10px;
+  background-color: #02C39A;
+}
+
+body {
+  background-color: #F0F3BD;
+}
