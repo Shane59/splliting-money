@@ -1,30 +1,13 @@
 import React, {useState, useEffect} from 'react';
+import './Top.css';
 
 export default function Top() {
   const [memberInfo, SetMemberInfo] = useState([]);
   const [currentMember, SetCurrentMember] = useState("");
   const [amoutPaid, SetAmoutPaid] = useState(0);
-  const [whoPaid, SetWhoPaid] = useState('');
   const [forWho, SetForWho] = useState([]);
-
-  function CreateRadioButtonForWhoPaid() {
-    var RadioButtons = [];
-    memberInfo.map((el, index) => {
-      RadioButtons.push (
-        <div key={el}>
-          <input
-            type="radio"
-            value={el}
-            name={`for-who-paid-${index}`}
-            checked={whoPaid === el}
-            onChange={(e) => selectedPepople(e)}
-          />
-          <label htmlFor="">{el}</label>
-        </div>
-      )
-    })
-    return RadioButtons;
-  }
+  const [calculated, setCalculated] = useState(false);
+  const [userObj, setUserObj] = useState([]);
 
   function CreateRadioButtonForWho() {
     var RadioButtons = [];
@@ -50,11 +33,12 @@ export default function Top() {
       <div>
         <input
           id="memberName"
+          className="add-member-input"
           type="text"
           onChange={(e) => SetCurrentMember(e.target.value)}
         />
         <label htmlFor="memberName"></label>
-        <button onClick={() => addMemebers()}>Add +</button>
+        <button className="add-button" onClick={() => addMemebers()}>Add +</button>
       </div>
     );
   }
@@ -64,10 +48,6 @@ export default function Top() {
     newArr.push(currentMember);
     SetMemberInfo(newArr);
     document.getElementById('memberName').value ='';
-  }
-
-  function selectedPepople(e) {
-    SetWhoPaid(e.target.value);
   }
 
   function selectedPepopleForWho(e) {
@@ -80,60 +60,91 @@ export default function Top() {
     }
     SetForWho(newArr);
   }
+
   function calcBill() {
-    const userObj = [];
-    for (var i = 0; i < memberInfo.length; i++) {
-      const temp = {};
-      temp.key = memberInfo[i];
-      temp.value = 0;
-      userObj.push(temp);
+    setCalculated(true);
+    var tempObj;
+    tempObj = [...userObj];
+    
+    if (tempObj.length == 0) {
+      for (var i = 0; i < memberInfo.length; i++) {
+        const temp = {};
+        temp.key = memberInfo[i];
+        temp.value = 0;
+        tempObj.push(temp);
+      }
+    } else {
+      tempObj = userObj;
     }
     const billPerPerson = Math.round(amoutPaid / forWho.length);
 
-    Object.keys(userObj).map((index) => {
-      if (forWho.includes(userObj[index].key)) {
-        userObj[index].value += billPerPerson;
+    Object.keys(tempObj).map((index) => {
+      if (forWho.includes(tempObj[index].key)) {
+        tempObj[index].value += billPerPerson;
       }
     });
-    console.log(userObj);
-    
+    setUserObj([...tempObj]);
+  }
+
+  function displayResult() {
+    let temp = [];
+    Object.keys(userObj).map((el) => {
+      console.log('how does this get rendered?');
+      console.log(userObj[el]);
+      temp.push(
+        <div className="person-result">
+          <div className="result-name">{userObj[el].key}</div>
+          <div className="result-amount">{userObj[el].value} yen</div>
+        </div>
+      );
+    })
+    return temp;
   }
 
   useEffect(() => {
-    console.log('memberInfo has Changed' + memberInfo);
+    console.log('memberInfo has Changed ' + memberInfo);
   }, [memberInfo])
 
   useEffect(() => {
     console.log('for Who?' + forWho);
   }, [forWho])
 
+  useEffect(() => {
+    console.log('userObj updated!' + userObj);
+  }, [userObj])
+
   return(
-    <div>
+    <div className="splitting-bill-app section">
+      <h1 className="title">Splitting Bill</h1>
       <div>
-        <div>
-          <div>type their name</div>
+        <div className="adding-name">
+          <div className="subtitle">add a name</div>
           {AddMemberInfo()}
         </div> 
         {memberInfo.length > 0 ? 
-          <div>
-            how much?
+          <div className="how-much-wrapper section">
+            <div className="subtitle">how much?</div>
             <div>
-              <input type="text" onChange={(e) => SetAmoutPaid(e.target.value)}/>
+              <input className="amount-input" type="text" onChange={(e) => SetAmoutPaid(e.target.value)}/>
             </div>
-            {amoutPaid} yen!
+            <div className="display-bill">{amoutPaid} yen!</div>
           </div> :
           null
         }
-        <div>who paid?</div>
-        <div>
-          {CreateRadioButtonForWhoPaid()}
+        <div className="section">
+          <div>for who?</div>
+          <div>
+            {CreateRadioButtonForWho()}
+          </div>
         </div>
-        <div>for who?</div>
-        <div>
-          {CreateRadioButtonForWho()}
-        </div> 
+        {calculated ? 
+          <div>
+            {displayResult(amoutPaid)}
+          </div>
+        :
+        null}
       </div>
-    <button onClick={() => calcBill()}>calculate</button>
+    <button className="calc-button" onClick={() => calcBill()}>calculate</button>
   </div>
   )
 }
