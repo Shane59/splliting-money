@@ -1,32 +1,51 @@
 .title {
   color: #05668D;
+  text-align: center;
 }
 
 .section {
-  margin: 10px;
+  margin-top: 16px;
 }
 
 .add-member-input {
-  height: 33px;
+  height: 32px;
+  width: 100%;
+}
+
+.add-button-wrapper {
+  text-align: center;
 }
 
 .add-button {
+  margin-top: 16px;
   padding: 10px;
   background-color: #02C39A;
+  border-radius: 30px;
 }
 
 .subtitle {
-  margin-bottom: 10px;
+  margin-bottom: 16px;
+  margin-left: 16px;
+  font-size: 24px;
 }
 
 .display-bill {
-  margin-top: 5px;
+  margin-top: 8px;
   border-bottom: 2px solid #028090;
-  padding-bottom: 10px;
+  padding-bottom: 16px;
+}
+
+.for-who-radio-buttons-wrapper {
+  margin-left: 16px;
 }
 
 .person-result {
   display: flex;
+}
+
+.result-wrapper {
+  text-align: center;
+  margin-top: 24px;
 }
 
 .result-name {
@@ -38,12 +57,19 @@
 }
 
 .amount-input {
-  height: 33px;
+  height: 32px;
+  width: 100%;
+}
+
+.calc-button-wrapper {
+  margin-top: 16px;
+  text-align: center;
 }
 
 .calc-button {
   padding: 10px;
   background-color: #02C39A;
+  border-radius: 30px;
 }
 
 body {
