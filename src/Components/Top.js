@@ -34,11 +34,16 @@ export default function Top() {
         <input
           id="memberName"
           className="add-member-input"
+          placeholder="add a member"
           type="text"
           onChange={(e) => SetCurrentMember(e.target.value)}
         />
         <label htmlFor="memberName"></label>
-        <button className="add-button" onClick={() => addMemebers()}>Add +</button>
+        <div className="add-button-wrapper">
+          <button
+            className="add-button"
+            onClick={() => addMemebers()}>Add +</button>
+        </div>
       </div>
     );
   }
@@ -114,37 +119,44 @@ export default function Top() {
   }, [userObj])
 
   return(
-    <div className="splitting-bill-app section">
+    <div className="splitting-bill-app">
       <h1 className="title">Splitting Bill</h1>
       <div>
         <div className="adding-name">
-          <div className="subtitle">add a name</div>
+          <div className="subtitle">1. Add a name</div>
           {AddMemberInfo()}
         </div> 
         {memberInfo.length > 0 ? 
           <div className="how-much-wrapper section">
-            <div className="subtitle">how much?</div>
+            <div className="subtitle">2. How much?</div>
             <div>
               <input className="amount-input" type="text" onChange={(e) => SetAmoutPaid(e.target.value)}/>
             </div>
-            <div className="display-bill">{amoutPaid} yen!</div>
           </div> :
           null
         }
-        <div className="section">
-          <div>for who?</div>
-          <div>
-            {CreateRadioButtonForWho()}
+        {memberInfo.length > 0 ?
+          <div className="section">
+            <div className="subtitle">3. For who?</div>
+            <div className="for-who-radio-buttons-wrapper">
+              {CreateRadioButtonForWho()}
+            </div>
           </div>
-        </div>
-        {calculated ? 
-          <div>
+        : null
+        }
+        {calculated ?
+          <div className="result-wrapper">
             {displayResult(amoutPaid)}
           </div>
         :
         null}
       </div>
-    <button className="calc-button" onClick={() => calcBill()}>calculate</button>
+      {memberInfo.length > 0 ?
+        <div className="calc-button-wrapper">
+          <button className="calc-button" onClick={() => calcBill()}>calculate</button>
+        </div>
+      : null
+      }
   </div>
   )
 }
