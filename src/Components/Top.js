@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import './Top.css';
+import RadioButtons from './RadioButtons/RadioButtons';
+import Results from './Results/Results';
 
 export default function Top() {
   const [memberInfo, SetMemberInfo] = useState([]);
@@ -8,25 +10,6 @@ export default function Top() {
   const [forWho, SetForWho] = useState([]);
   const [calculated, setCalculated] = useState(false);
   const [userObj, setUserObj] = useState([]);
-
-  function CreateRadioButtonForWho() {
-    var RadioButtons = [];
-    memberInfo.map((el, index) => {
-      RadioButtons.push (
-        <div key={el}>
-          <input
-            type="radio"
-            value={el}
-            name={`for-who-${index}`}
-            checked={forWho.includes(el)}
-            onClick={(e) => selectedPepopleForWho(e)}
-          />
-          <label htmlFor="">{el}</label>
-        </div>
-      )
-    })
-    return RadioButtons;
-  }
 
   function AddMemberInfo() {
     return (
@@ -91,21 +74,6 @@ export default function Top() {
     setUserObj([...tempObj]);
   }
 
-  function displayResult() {
-    let temp = [];
-    Object.keys(userObj).map((el) => {
-      console.log('how does this get rendered?');
-      console.log(userObj[el]);
-      temp.push(
-        <div className="person-result">
-          <div className="result-name">{userObj[el].key}</div>
-          <div className="result-amount">{userObj[el].value} yen</div>
-        </div>
-      );
-    })
-    return temp;
-  }
-
   useEffect(() => {
     console.log('memberInfo has Changed ' + memberInfo);
   }, [memberInfo])
@@ -132,24 +100,22 @@ export default function Top() {
             <div>
               <input className="amount-input" type="text" onChange={(e) => SetAmoutPaid(e.target.value)}/>
             </div>
-          </div> :
+          </div>
+          :
           null
         }
         {memberInfo.length > 0 ?
           <div className="section">
             <div className="subtitle">3. For who?</div>
             <div className="for-who-radio-buttons-wrapper">
-              {CreateRadioButtonForWho()}
+              <RadioButtons
+                memberInfo={memberInfo}
+                function={selectedPepopleForWho}
+                forWho={forWho}/>
             </div>
           </div>
         : null
         }
-        {calculated ?
-          <div className="result-wrapper">
-            {displayResult(amoutPaid)}
-          </div>
-        :
-        null}
       </div>
       {memberInfo.length > 0 ?
         <div className="calc-button-wrapper">
@@ -157,6 +123,14 @@ export default function Top() {
         </div>
       : null
       }
+      {calculated ?
+        <div className="result-wrapper">
+          <Results
+            userObj={userObj}
+          />
+        </div>
+      :
+        null}
   </div>
   )
 }
