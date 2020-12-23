@@ -1,6 +1,10 @@
 .title {
-  color: #05668D;
+  background-color: #02C39A;
   text-align: center;
+  margin: 0;
+  padding: 10px;
+  color: white;
+  margin-bottom: 24px;
 }
 
 .section {
@@ -17,10 +21,14 @@
 }
 
 .add-button {
+  width: 120px;
   margin-top: 16px;
   padding: 10px;
   background-color: #02C39A;
   border-radius: 30px;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
 }
 
 .subtitle {
@@ -67,6 +75,10 @@
 }
 
 .calc-button {
+  width: 120px;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
   padding: 10px;
   background-color: #02C39A;
   border-radius: 30px;
