@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "splitting-bill-app",
     "public": "public",
     "ignore": [
       "firebase.json",
