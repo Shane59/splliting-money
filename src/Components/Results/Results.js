@@ -1,5 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import './Results.css';
+import styled from "styled-components";
+
+const PersonResult = styled.div`
+  display: flex;
+`;
+const ResultName = styled.div`
+  flex: 0 0 180px;
+`;
+const ResultAmount = styled.div`
+  flex: 1 0 auto;
+`;
 
 export default function Results(props) {
   let temp = [];
@@ -7,10 +17,10 @@ export default function Results(props) {
       console.log('how does this get rendered?');
       console.log(props.userObj[el]);
       temp.push(
-        <div className="person-result">
-          <div className="result-name">{props.userObj[el].key}</div>
-          <div className="result-amount">{props.userObj[el].value} yen</div>
-        </div>
+        <PersonResult className="person-result">
+          <ResultName className="result-name">{props.userObj[el].key}</ResultName>
+          <ResultAmount className="result-amount">{props.userObj[el].value} yen</ResultAmount>
+        </PersonResult>
       );
     })
     return temp;

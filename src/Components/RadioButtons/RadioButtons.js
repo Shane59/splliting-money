@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import './RadioButtons.css';
 
 export default function RadioButtons(props) {
   var RadioButtons = [];
