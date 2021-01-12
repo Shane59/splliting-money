@@ -1,7 +1,65 @@
 import React, {useState, useEffect} from 'react';
-import './Top.css';
 import RadioButtons from './RadioButtons/RadioButtons';
 import Results from './Results/Results';
+import styled from 'styled-components';
+
+const Title = styled.h1`
+  background-color: #02C39A;
+  text-align: center;
+  margin: 0;
+  padding: 10px;
+  color: white;
+  margin-bottom: 24px;
+`;
+const AddMemberInput = styled.input`
+  height: 32px;
+  width: 100%;
+`;
+const AddButton = styled.button`
+  width: 120px;
+  margin-top: 16px;
+  padding: 10px;
+  background-color: #02C39A;
+  border-radius: 30px;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+`;
+const Subtitle = styled.div`
+  margin-bottom: 16px;
+  margin-left: 16px;
+  font-size: 24px;
+`;
+const AddButtonWrapper = styled.div`
+  text-align: center;
+`;
+const ForWhoRadioButtonsWrapper = styled.div`
+  margin-left: 16px;
+`;
+const ResultWrapper = styled.div`
+  text-align: center;
+  margin-top: 24px;
+`;
+const AmountInput = styled.input`
+  height: 32px;
+  width: 100%;
+`;
+const CalcButtonWrapper = styled.div`
+  margin-top: 16px;
+  text-align: center;
+`;
+const CalcButton = styled.button`
+  width: 120px;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 10px;
+  background-color: #02C39A;
+  border-radius: 30px;
+`;
+const Section = styled.div`
+  margin-top: 16px;
+`;
 
 export default function Top() {
   const [memberInfo, SetMemberInfo] = useState([]);
@@ -14,19 +72,17 @@ export default function Top() {
   function AddMemberInfo() {
     return (
       <div>
-        <input
+        <AddMemberInput
           id="memberName"
-          className="add-member-input"
           placeholder="add a member"
           type="text"
           onChange={(e) => SetCurrentMember(e.target.value)}
         />
         <label htmlFor="memberName"></label>
-        <div className="add-button-wrapper">
-          <button
-            className="add-button"
-            onClick={() => addMemebers()}>Add +</button>
-        </div>
+        <AddButtonWrapper>
+          <AddButton
+            onClick={() => addMemebers()}>Add +</AddButton>
+        </AddButtonWrapper>
       </div>
     );
   }
@@ -87,48 +143,48 @@ export default function Top() {
   }, [userObj])
 
   return(
-    <div className="splitting-bill-app">
-      <h1 className="title">Splitting Bill</h1>
+    <div>
+      <Title>Splitting Bill</Title>
       <div>
-        <div className="adding-name">
-          <div className="subtitle">1. Add a name</div>
+        <div>
+          <Subtitle>1. Add a name</Subtitle>
           {AddMemberInfo()}
         </div> 
         {memberInfo.length > 0 ? 
-          <div className="how-much-wrapper section">
-            <div className="subtitle">2. How much?</div>
+          <Section>
+            <Subtitle>2. How much?</Subtitle>
             <div>
-              <input className="amount-input" type="text" onChange={(e) => SetAmoutPaid(e.target.value)}/>
+              <AmountInput type="text" onChange={(e) => SetAmoutPaid(e.target.value)}/>
             </div>
-          </div>
+          </Section>
           :
           null
         }
         {memberInfo.length > 0 ?
-          <div className="section">
-            <div className="subtitle">3. For who?</div>
-            <div className="for-who-radio-buttons-wrapper">
+          <Section>
+            <Subtitle>3. For who?</Subtitle>
+            <ForWhoRadioButtonsWrapper>
               <RadioButtons
                 memberInfo={memberInfo}
                 function={selectedPepopleForWho}
                 forWho={forWho}/>
-            </div>
-          </div>
+            </ForWhoRadioButtonsWrapper>
+          </Section>
         : null
         }
       </div>
       {memberInfo.length > 0 ?
-        <div className="calc-button-wrapper">
-          <button className="calc-button" onClick={() => calcBill()}>calculate</button>
-        </div>
+        <CalcButtonWrapper>
+          <CalcButton onClick={() => calcBill()}>calculate</CalcButton>
+        </CalcButtonWrapper>
       : null
       }
       {calculated ?
-        <div className="result-wrapper">
+        <ResultWrapper>
           <Results
             userObj={userObj}
           />
-        </div>
+        </ResultWrapper>
       :
         null}
   </div>
